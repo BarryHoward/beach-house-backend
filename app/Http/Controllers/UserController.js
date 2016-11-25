@@ -15,7 +15,7 @@ class UserController {
 				throw new Error() 
 			}
 			user.access_token = yield request.auth.generate(user)
-      		response.json(user)
+      		response.status(201).json(user)
 
 		} catch(error) {
 			response.status(401).json({text: "Wrong user name or password!"})
@@ -30,7 +30,7 @@ class UserController {
 			data.password = yield Hash.make('password')
 			data.admin = false;
 			let user = yield User.create(data)
-			response.status(201).json({text: "User created!", data: user})
+			response.status(201).json(user.toJSON())
 		} else {
 			response.status(401).json({text: "Only admins can create new users"})
 		}
@@ -40,7 +40,7 @@ class UserController {
 	* index (request, response){
 		const user_list = yield User.query().table('users')
 		.orderBy('username', 'asc')
-		response.json(user_list)
+		response.status(200).json(user_list)
 	}
 
 	* show(request, response){
@@ -56,13 +56,13 @@ class UserController {
 		let admin_user = request.authUser
 
 		if (!user){
-			response.status(404).json({text: "User not found"})
+			response.status(404)
 		} else {
 		  	if (admin_user.admin){
 		  		yield user.delete()
-		  		response.status(204).json({text: "Comment deleted!"})
+		  		response.status(204)
 		  	} else {
-		  		reposne.status(403).json({text: "Only admins can create new users"})
+		  		response.status(403).json({text: "Only admins can delete users"})
 		  	}
 		}
 	}
