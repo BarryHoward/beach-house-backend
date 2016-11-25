@@ -21,7 +21,7 @@ Route.on('/').render('welcome')
 
 //----------- Owners -----------------------------------------------------------
 
-Route.get('/login', 'UserController.login');
+Route.post('/login', 'UserController.login');
 
 Route.get('/owners', 'UserController.index');
 Route.get('/owners/:owner_id', 'UserController.show');
