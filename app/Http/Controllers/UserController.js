@@ -30,9 +30,9 @@ class UserController {
 			data.password = yield Hash.make('password')
 			data.admin = false;
 			let user = yield User.create(data)
-			response.status(201).json(user.toJSON())
+			response.status(201).json(user)
 		} else {
-			response.status(401).json({text: "Only admins can create new users"})
+			response.status(403)
 		}
 	}
 
@@ -40,13 +40,18 @@ class UserController {
 	* index (request, response){
 		const user_list = yield User.query().table('users')
 		.orderBy('username', 'asc')
+		.where('admin', false)
 		response.status(200).json(user_list)
 	}
 
 	* show(request, response){
 		let user_id = request.param("owner_id")
 		let user = yield User.findBy('id', user_id)
-		response.status(201).json(user)
+		if (user){
+			response.status(200).json(user)
+		} else {
+			response.status(404)
+		}
 	}
 
 	* delete (request, response){
@@ -62,7 +67,7 @@ class UserController {
 		  		yield user.delete()
 		  		response.status(204)
 		  	} else {
-		  		response.status(403).json({text: "Only admins can delete users"})
+		  		response.status(403)
 		  	}
 		}
 	}
