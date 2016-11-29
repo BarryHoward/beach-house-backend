@@ -32,7 +32,7 @@ class UserController {
 			let user = yield User.create(data)
 			response.status(201).json(user)
 		} else {
-			response.status(403)
+			response.status(403).send()
 		}
 	}
 
@@ -50,7 +50,7 @@ class UserController {
 		if (user){
 			response.status(200).json(user)
 		} else {
-			response.status(404)
+			response.status(404).send()
 		}
 	}
 
@@ -61,13 +61,13 @@ class UserController {
 		let admin_user = request.authUser
 
 		if (!user){
-			response.status(404)
+			response.status(404).send()
 		} else {
 		  	if (admin_user.admin){
 		  		yield user.delete()
-		  		response.status(204)
+		  		response.status(204).send()
 		  	} else {
-		  		response.status(403)
+		  		response.status(403).send()
 		  	}
 		}
 	}

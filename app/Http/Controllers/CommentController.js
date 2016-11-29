@@ -29,7 +29,7 @@ class CommentController {
 		if (comment){
 			response.status(200).json(comment)
 		} else {
-			response.status(404)
+			response.status(404).send()
 		}
 	}
 
@@ -40,13 +40,13 @@ class CommentController {
 		let user = request.authUser
 
 		if (!comment){
-			response.status(404)
+			response.status(404).send()
 		} else {
 		  	if (user.admin || (user.id === comment.users_id)){
 		  		yield user.delete()
-		  		response.status(204)
+		  		response.status(204).send()
 		  	} else {
-		  		response.status(403)
+		  		response.status(403).send()
 		  	}
 		}
 	}
