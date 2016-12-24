@@ -19,7 +19,7 @@ class DateFormatTableSchema extends Schema {
       table.dropColumn('day')
       table.dropColumn('month')
       table.dropColumn('year')
-  }
+  })
 
 }
 
