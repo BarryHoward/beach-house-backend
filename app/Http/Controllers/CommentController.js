@@ -7,7 +7,7 @@ class CommentController {
 	* create (request, response){
 		let user = request.authUser;
 		if (user){
-			let data = request.only('week_of', 'clean', 'repair', 'beds', 'towels', 'windows', 'supplies', 'content')
+			let data = request.only('day', 'month', 'year', 'clean', 'repair', 'beds', 'towels', 'windows', 'supplies', 'content')
 			data.users_id = user.id;
 			let comment = yield Comment.create(data)
 			response.status(201).json(comment.toJSON())
@@ -19,7 +19,9 @@ class CommentController {
 
 	* index (request, response){
 		const comment_list = yield Comment.query().table('comments')
-		.orderBy('week_of', 'desc')
+		.orderBy('year', 'desc')
+		.orderBy('month', 'desc')
+		.orderBy('day', 'desc')
 		response.status(200).json(comment_list)
 	}
 
