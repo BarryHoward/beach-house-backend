@@ -21,9 +21,9 @@ class CommentController {
 			let comment = yield Comment.create(data)
 			response.status(201).json(comment)
 		} else {
-			prev_comment.fill(data)
-			yield prev_comment.save()
-			response.status(200).json(prev_comment)
+			prev_comment[0].fill(data)
+			yield prev_comment[0].save()
+			response.status(200).json(prev_comment[0])
 		}
 	}
 
