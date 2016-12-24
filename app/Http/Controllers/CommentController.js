@@ -9,9 +9,7 @@ class CommentController {
 		let data = request.only('day', 'month', 'year', 'clean', 'repair', 'beds', 'towels', 'windows', 'supplies', 'content')
 		data.users_id = user.id;
 
-		let prev_comment = yield Comment.query().table('comments')
-			.where({day: data.day, month: data.month, year: data.year})
-			.limit(1)
+		let prev_comment = yield Comment.find({day: data.day, month: data.month, year: data.year})
 
 		console.log(prev_comment)
 
@@ -21,9 +19,9 @@ class CommentController {
 			let comment = yield Comment.create(data)
 			response.status(201).json(comment)
 		} else {
-			prev_comment[0].fill(data)
-			yield prev_comment[0].save()
-			response.status(200).json(prev_comment[0])
+			prev_comment.fill(data)
+			yield prev_comment.save()
+			response.status(200).json(prev_comment)
 		}
 	}
 
