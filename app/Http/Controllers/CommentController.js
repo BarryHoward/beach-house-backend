@@ -11,7 +11,7 @@ class CommentController {
 
 		console.log(data.day, data.month, data.year)
 
-		let prev_comment = yield Comment.find({"day": data.day, "month": data.month, "year": data.year})
+		let prev_comment = yield Comment.findBy({"day": data.day, "month": data.month, "year": data.year})
 
 		console.log(prev_comment)
 
