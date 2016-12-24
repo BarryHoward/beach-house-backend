@@ -9,7 +9,9 @@ class CommentController {
 		let data = request.only('day', 'month', 'year', 'clean', 'repair', 'beds', 'towels', 'windows', 'supplies', 'content')
 		data.users_id = user.id;
 
-		let prev_comment = yield Comment.find({day: data.day, month: data.month, year: data.year})
+		console.log(data.day, data.month, data.year)
+
+		let prev_comment = yield Comment.table('comments').find({'day': data.day, 'month': data.month, 'year': data.year})
 
 		console.log(prev_comment)
 
