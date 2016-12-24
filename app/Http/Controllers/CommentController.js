@@ -4,15 +4,24 @@ const Comment = use('App/Model/Comment')
 
 class CommentController {
 
-	* create (request, response){
+	* change (request, response){
 		let user = request.authUser;
-		if (user){
-			let data = request.only('day', 'month', 'year', 'clean', 'repair', 'beds', 'towels', 'windows', 'supplies', 'content')
-			data.users_id = user.id;
-			let comment = yield Comment.create(data)
-			response.status(201).json(comment.toJSON())
-		} else {
+		let data = request.only('day', 'month', 'year', 'clean', 'repair', 'beds', 'towels', 'windows', 'supplies', 'content')
+		data.users_id = user.id;
+
+		const prev_comment = yield Comment.query().table('comments')
+			.where({day: data.day, month: data.month, year: data.year})
+			.limit(1)
+
+		if (!user){
 			response.status(401).json({text: "Must be logged in to create comment"})
+		} else if(!prev_comment) {
+			let comment = yield Comment.create(data)
+			response.status(201).json(comment)
+		} else {
+			prev_comment.fill(data)
+			yield prev_comment.save()
+			response.status(200).json(prev_comment)
 		}
 	}
 

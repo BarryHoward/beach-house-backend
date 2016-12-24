@@ -33,7 +33,6 @@ Route.delete('/owners/:owner_id', 'UserController.delete').middleware('auth');
 
 Route.get('/comments', 'CommentController.index');
 Route.get('/comments/:comment_id', 'CommentController.show');
-
-Route.post('/comments', 'CommentController.create').middleware('auth')
-Route.patch('/comments/:comment_id', 'CommentController.update').middleware('auth');
+Route.post('/comments', 'CommentController.change').middleware('auth')
+// Route.patch('/comments/:comment_id', 'CommentController.update').middleware('auth');
 Route.delete('/comments/:comment_id', 'CommentController.delete').middleware('auth')
