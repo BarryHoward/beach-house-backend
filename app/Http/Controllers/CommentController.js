@@ -52,6 +52,8 @@ class CommentController {
 		let comment = yield Comment.findBy('id', comment_id)
 		let user = request.authUser
 
+		console.log(comment, user)
+
 		if (!comment){
 			response.status(404).send()
 		} else {
