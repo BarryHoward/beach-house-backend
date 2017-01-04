@@ -52,13 +52,11 @@ class CommentController {
 		let comment = yield Comment.findBy('id', comment_id)
 		let user = request.authUser
 
-		console.log(comment, user)
-
 		if (!comment){
 			response.status(404).send()
 		} else {
 		  	if (user.admin || (user.id === comment.users_id)){
-		  		yield user.delete()
+		  		yield comment.delete()
 		  		response.status(204).send()
 		  	} else {
 		  		response.status(403).send()
