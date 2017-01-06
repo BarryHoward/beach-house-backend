@@ -37,7 +37,8 @@ class CommentController {
 	}
 
 	* show(request, response){
-		let comment_id = request.param("comment_id")
+		let date = request.param("date")
+		console.log(date)
 		let comment = yield Comment.findBy('id', comment_id)
 		if (comment){
 			response.status(200).json(comment)
