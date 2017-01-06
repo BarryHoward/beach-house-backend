@@ -38,10 +38,14 @@ class CommentController {
 
 	* show(request, response){
 		let date = request.param("date")
-		console.log(date)
-		// let comment = yield Comment.findBy('id', comment_id)
-		if (date){
-			response.status(200).json(date)
+		let dateArray = date.split("-")
+
+		let comment = yield Comment.findBy({"day": dateArray[2],
+			"month": dateArray[1], "year": dateArray[0]})
+
+		console.log(dateArray, comment)
+		if (comment){
+			response.status(200).json(comment)
 		} else {
 			response.status(404).send()
 		}
