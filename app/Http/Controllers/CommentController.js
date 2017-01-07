@@ -8,6 +8,7 @@ class CommentController {
 		let user = request.authUser;
 		let data = request.only('day', 'month', 'year', 'clean', 'repair', 'beds', 'towels', 'windows', 'supplies', 'content')
 		data.users_id = user.id;
+		data.username = user.username;
 
 		console.log(data.day, data.month, data.year)
 
