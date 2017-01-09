@@ -11,6 +11,7 @@ class UserController {
 
 		try {
 			let correct = yield Hash.verify(data.password, user.password)
+			console.log(correct)
 			if (!correct) { 
 				throw new Error() 
 			}
