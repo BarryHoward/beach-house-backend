@@ -10,7 +10,7 @@ class UserController {
 		let user = yield User.findBy('username', data.username)
 
 		try {
-			let correct = Hash.verify(data.password, user.password)
+			let correct = yield Hash.verify(data.password, user.password)
 			console.log(correct)
 			console.log(Hash.verify(data.password, user.password))
 			if (!correct) { 
