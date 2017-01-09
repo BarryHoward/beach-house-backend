@@ -11,8 +11,9 @@ class UserController {
 
 		try {
 			let correct = Hash.verify(data.password, user.password)
+			console.log(correct)
 			if (!correct) { 
-				throw new Error() 
+				response.status(401).json({text: "Wrong user name or password!"})
 			}
 			user.access_token = yield request.auth.generate(user)
       		response.status(201).json(user)
