@@ -10,11 +10,7 @@ class CommentController {
 		data.users_id = user.id;
 		data.username = user.username;
 
-		console.log(data.day, data.month, data.year)
-
 		let prev_comment = yield Comment.findBy({"day": data.day, "month": data.month, "year": data.year})
-
-		console.log(prev_comment)
 
 		if (!user){
 			response.status(401).json({text: "Must be logged in to create comment"})
@@ -61,11 +57,11 @@ class CommentController {
 		if (!comment){
 			response.status(404).send()
 		} else {
-		  	if (user.admin || (user.id === comment.users_id)){
+		  	if (user){
 		  		yield comment.delete()
 		  		response.status(204).send()
 		  	} else {
-		  		response.status(403).send()
+		  		response.status(401).json({text: "Must be logged in to delete comment"})
 		  	}
 		}
 	}
