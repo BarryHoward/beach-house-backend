@@ -9,19 +9,22 @@ class UserController {
 		let data = request.only('username', 'password')
 		let user = yield User.findBy('username', data.username)
 
-		try {
-			let correct = yield Hash.verify(data.password, user.password)
-			console.log(data.password, user.password)
-			console.log(correct)
-			if (!correct) { 
-				throw new Error() 
-			}
-			user.access_token = yield request.auth.generate(user)
-      		response.status(201).json(user)
+		user.password = yield Hash.make(data.password);
 
-		} catch(error) {
-			response.status(401).json({text: "Wrong user name or password!"})
-		}
+		yield user.save()
+		response.status(201).json(user)
+
+		// try {
+		// 	let correct = yield Hash.verify(data.password, user.password)
+		// 	if (!correct) { 
+		// 		throw new Error() 
+		// 	}
+		// 	user.access_token = yield request.auth.generate(user)
+  //     		response.status(201).json(user)
+
+		// } catch(error) {
+		// 	response.status(401).json({text: "Wrong user name or password!"})
+		// }
 	}
 
 
@@ -29,7 +32,7 @@ class UserController {
 		let admin = request.authUser;
 		if (admin.admin){
 			let data = request.only('username', 'password', 'email', 'info')
-			data.password = yield Hash.make('password')
+			data.password = yield Hash.make(data.password)
 			data.admin = false;
 			let user = yield User.create(data)
 			response.status(201).json(user)
