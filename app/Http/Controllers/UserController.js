@@ -78,7 +78,7 @@ class UserController {
 
 		if (!owner){
 			response.status(404).json({error: "Owner not found"})
-		} else if (owner !== user ){
+		} else if (owner.id !== user.id ){
 			response.status(403).json({error: "Not logged into correct user"})
 		} else {
 			owner.fill(data)
