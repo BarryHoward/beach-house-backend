@@ -1,6 +1,7 @@
 'use strict'
 
 const User = use('App/Model/User')
+const Person = user('App/Model/Person')
 const Hash = use('Hash')
 
 class UserController {
@@ -8,11 +9,6 @@ class UserController {
 	* login (request, response){
 		let data = request.only('username', 'password')
 		let user = yield User.findBy('username', data.username)
-
-		// user.password = yield Hash.make(data.password);
-
-		// yield user.save()
-		// response.status(201).json(user)
 
 		try {
 			let correct = yield Hash.verify(data.password, user.password)
@@ -31,7 +27,7 @@ class UserController {
 	* create (request, response){
 		let admin = request.authUser;
 		if (admin.admin){
-			let data = request.only('username', 'password', 'email', 'info')
+			let data = request.only('username', 'password')
 			data.password = yield Hash.make(data.password)
 			data.admin = false;
 			let user = yield User.create(data)
@@ -56,6 +52,37 @@ class UserController {
 			response.status(200).json(user)
 		} else {
 			response.status(404).send()
+		}
+	}
+
+	* update(request, response){
+		let user = request.authUser;
+		let data = request.only('username', 'password', 'interval_1', 'interval_2', 'interval_3')	
+
+		let owner_id = request.param("owner_id") // get id of current owner
+		let owner = yield User.findBy('id', owner_id) // get current owner
+
+		// // update persons
+		// let persons = request.only('persons')
+		// for (var i=0; i<persons.length; i++){
+		// 	let person = yield Person.findBy('id', persons[i].id)
+		// 	if (person){
+		// 		person.fill(persons[i])
+		// 		yield person.save()
+		// 	} else {
+		// 		yield Person.create(persons[i])
+		// 	}
+		// }
+
+
+		if (!owner){
+			response.status(404).json({error: "Owner not found"})
+		} else if (owner !== user ){
+			response.status(403).json({error: "Not logged into correct user"})
+		} else {
+			owner.fill(data)
+			yield owner.save()
+			response.status(201).json(owner)
 		}
 	}
 
