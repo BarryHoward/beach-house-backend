@@ -65,6 +65,7 @@ class UserController {
 
 		// update persons
 		let persons = request.only('persons')
+		console.log(persons)
 		for (var i=0; i<persons.length; i++){
 			let person = yield Person.findBy('id', persons[i].id)
 			if (person){
