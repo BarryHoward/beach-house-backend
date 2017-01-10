@@ -61,7 +61,7 @@ class UserController {
 
 		let owner_id = request.param("owner_id") // get id of current owner
 		let owner = yield User.findBy('id', owner_id) // get current owner
-		console.log(owner_id, owner)
+		console.log(owner_id, owner, user)
 
 		// // update persons
 		// let persons = request.only('persons')
