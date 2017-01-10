@@ -61,7 +61,7 @@ class UserController {
 
 		let owner_id = request.param("owner_id") // get id of current owner
 		let owner = yield User.findBy('id', owner_id) // get current owner
-		console.log(owner_id, owner, user)
+		data.password = yield Hash.make(data.password)
 
 		// // update persons
 		// let persons = request.only('persons')
@@ -78,7 +78,7 @@ class UserController {
 
 		if (!owner){
 			response.status(404).json({error: "Owner not found"})
-		} else if (owner.id !== user.id ){
+		} else if (owner.id !== user.id && !user.admin ){
 			response.status(403).json({error: "Not logged into correct user"})
 		} else {
 			owner.fill(data)
