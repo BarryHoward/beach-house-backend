@@ -68,18 +68,20 @@ class UserController {
 		// update people
 		let people = request.only('people')
 		let peopleArray = people.people
-		for (var i=0; i<peopleArray.length; i++){
-			try {
-				let person = yield Person.findBy('id', peopleArray[i].id)
-				if (!person) { 
-					throw new Error() 
+		if (peopleArray){
+			for (var i=0; i<peopleArray.length; i++){
+				try {
+					let person = yield Person.findBy('id', peopleArray[i].id)
+					if (!person) { 
+						throw new Error() 
+					}
+					console.log("exist")
+					person.fill(peopleArray[i])
+					yield person.save()
+				} catch(error) {
+					console.log("no exist")
+					yield Person.create(peopleArray[i])
 				}
-				console.log("exist")
-				person.fill(peopleArray[i])
-				yield person.save()
-			} catch(error) {
-				console.log("no exist")
-				yield Person.create(peopleArray[i])
 			}
 		}
 
