@@ -49,6 +49,9 @@ class UserController {
 		let user_id = request.param("owner_id")
 		let user = yield User.findBy('id', user_id)
 		if (user){
+			let people = yield Person.query().table('people')
+				.where("user_id", user.id)
+			user.people = people;
 			response.status(200).json(user)
 		} else {
 			response.status(404).send()
