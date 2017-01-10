@@ -51,6 +51,7 @@ class UserController {
 		if (user){
 			let people = yield Person.query().table('people')
 				.where("user_id", user.id)
+			console.log(people)
 			user.people = people;
 			response.status(200).json(user)
 		} else {
