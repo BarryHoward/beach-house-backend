@@ -63,17 +63,17 @@ class UserController {
 		let owner = yield User.findBy('id', owner_id) // get current owner
 		data.password = yield Hash.make(data.password)
 
-		// // update persons
-		// let persons = request.only('persons')
-		// for (var i=0; i<persons.length; i++){
-		// 	let person = yield Person.findBy('id', persons[i].id)
-		// 	if (person){
-		// 		person.fill(persons[i])
-		// 		yield person.save()
-		// 	} else {
-		// 		yield Person.create(persons[i])
-		// 	}
-		// }
+		// update persons
+		let persons = request.only('persons')
+		for (var i=0; i<persons.length; i++){
+			let person = yield Person.findBy('id', persons[i].id)
+			if (person){
+				person.fill(persons[i])
+				yield person.save()
+			} else {
+				yield Person.create(persons[i])
+			}
+		}
 
 
 		if (!owner){
