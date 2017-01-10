@@ -67,13 +67,15 @@ class UserController {
 		let persons = request.only('persons')
 		let personsArray = persons.persons
 		for (var i=0; i<personsArray.length; i++){
-			let person = yield Person.findBy('id', personsArray[i].id)
-			console.log(person)
-			if (person){
+			try {
+				let person = yield Person.findBy('id', personsArray[i].id)
+				if (!person) { 
+					throw new Error() 
+				}
 				console.log("exist")
 				person.fill(personsArray[i])
 				yield person.save()
-			} else {
+			} catch(error) {
 				console.log("no exist")
 				yield Person.create(personsArray[i])
 			}
