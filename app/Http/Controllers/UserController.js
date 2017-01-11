@@ -122,6 +122,7 @@ class UserController {
 		console.log(person_id)
 
 		if (person_id){
+			console.log("tried")
 			let person = yield Person.findBy('id', person_id)
 		}
 		let user = request.authUser
