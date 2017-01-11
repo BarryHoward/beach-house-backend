@@ -124,7 +124,7 @@ class UserController {
 		if (!person){
 			response.status(404).send()
 		} else {
-		  	if (user.admin || user.id == person_id){
+		  	if (user.admin || user.id == person.user_id){
 		  		yield person.delete()
 		  		response.status(204).send()
 		  	} else {
