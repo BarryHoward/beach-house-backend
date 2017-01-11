@@ -29,7 +29,7 @@ Route.get('/owners/:owner_id', 'UserController.show');
 Route.post('/owners', 'UserController.create').middleware('auth')
 Route.patch('/owners/:owner_id', 'UserController.update').middleware('auth');
 Route.delete('/owners/:owner_id', 'UserController.delete').middleware('auth');
-
+Route.delete('/people/:person_id', 'UserController.deletePerson').middleware('auth');
 
 Route.get('/comments', 'CommentController.index');
 Route.get('/comments/:date', 'CommentController.show');

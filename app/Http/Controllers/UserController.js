@@ -115,6 +115,24 @@ class UserController {
 		}
 	}
 
+	* deletePerson (request, response){
+		let person_id = request.param("person_id")
+
+		let person = yield Person.findBy('id', person_id)
+		let user = request.authUser
+
+		if (!person){
+			response.status(404).send()
+		} else {
+		  	if (user.admin || user.id == person_id){
+		  		yield person.delete()
+		  		response.status(204).send()
+		  	} else {
+		  		response.status(403).send()
+		  	}
+		}
+	}
+
 
 }
 
