@@ -47,7 +47,9 @@ class UserController {
 
 	* show(request, response){
 		let user_id = request.param("owner_id")
-		let user = yield User.findBy('id', user_id)
+		let user = yield User.query().table('users')
+			.where('id', user_id)
+			.select('username', 'admin', 'interval_1', 'interval_2', 'interval_3')
 		if (user){
 			let people = yield Person.query().table('people')
 				.where("user_id", user.id)
@@ -59,7 +61,7 @@ class UserController {
 
 	* update(request, response){
 		let user = request.authUser;
-		let data = request.only('username', 'password', 'interval_1', 'interval_2', 'interval_3')	
+		let data = request.only('username', 'interval_1', 'interval_2', 'interval_3')	
 
 		let owner_id = request.param("owner_id") // get id of current owner
 		let owner = yield User.findBy('id', owner_id) // get current owner
