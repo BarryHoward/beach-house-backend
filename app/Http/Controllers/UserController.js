@@ -65,32 +65,34 @@ class UserController {
 		let owner = yield User.findBy('id', owner_id) // get current owner
 		// data.password = yield Hash.make(data.password)
 
-		// update people
-		let people = request.only('people')
-		let peopleArray = people.people
-		if (peopleArray){
-			for (var i=0; i<peopleArray.length; i++){
-				try {
-					let person = yield Person.findBy('id', peopleArray[i].id)
-					if (!person) { 
-						throw new Error() 
-					}
-					console.log("exist")
-					person.fill(peopleArray[i])
-					yield person.save()
-				} catch(error) {
-					console.log("no exist")
-					yield Person.create(peopleArray[i])
-				}
-			}
-		}
-
 
 		if (!owner){
 			response.status(404).json({error: "Owner not found"})
 		} else if (owner.id !== user.id && !user.admin ){
 			response.status(403).json({error: "Not logged into correct user"})
 		} else {
+
+			// update people
+			let people = request.only('people')
+			let peopleArray = people.people
+			if (peopleArray){
+				for (var i=0; i<peopleArray.length; i++){
+					try {
+						let person = yield Person.findBy('id', peopleArray[i].id)
+						if (!person) { 
+							throw new Error() 
+						}
+						console.log("exist")
+						person.fill(peopleArray[i])
+						yield person.save()
+					} catch(error) {
+						peopleArray[i].user_id = owner_id;
+						yield Person.create(peopleArray[i])
+					}
+				}
+			}
+
+			// update owner
 			owner.fill(data)
 			yield owner.save()
 			response.status(201).json(owner)
