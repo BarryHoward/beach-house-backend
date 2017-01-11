@@ -119,10 +119,7 @@ class UserController {
 
 	* deletePerson (request, response){
 		let person_id = request.param("person_id")
-		console.log(person_id)
-
-		if (person_id){
-			console.log("tried")
+		try {
 			let person = yield Person.findBy('id', person_id)
 		}
 		let user = request.authUser
