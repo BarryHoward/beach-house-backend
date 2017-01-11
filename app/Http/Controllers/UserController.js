@@ -65,7 +65,7 @@ class UserController {
 
 		let owner_id = request.param("owner_id") // get id of current owner
 		let owner = yield User.findBy('id', owner_id) // get current owner
-		data.password = yield Hash.make(data.password)
+		// data.password = yield Hash.make(data.password)
 
 		// update people
 		let people = request.only('people')
