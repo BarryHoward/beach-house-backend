@@ -133,6 +133,7 @@ class UserController {
 			  		response.status(403).send()
 			  	}
 			}
+		}
 		catch(error){
 			response.status(404).send()
 		}
