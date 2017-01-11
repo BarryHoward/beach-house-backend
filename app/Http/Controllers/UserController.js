@@ -47,9 +47,7 @@ class UserController {
 
 	* show(request, response){
 		let user_id = request.param("owner_id")
-		let user = yield User.query().table('users')
-			.where('id', user_id)
-			.select('username', 'admin', 'interval_1', 'interval_2', 'interval_3')
+		let user = yield User.findBy('id', user_id)
 		if (user){
 			let people = yield Person.query().table('people')
 				.where("user_id", user.id)
