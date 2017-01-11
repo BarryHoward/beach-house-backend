@@ -121,18 +121,20 @@ class UserController {
 		let person_id = request.param("person_id")
 		try {
 			let person = yield Person.findBy('id', person_id)
-		}
-		let user = request.authUser
+			let user = request.authUser
 
-		if (!person){
+			if (!person){
+				response.status(404).send()
+			} else {
+			  	if (user.admin || user.id == person.user_id){
+			  		yield person.delete()
+			  		response.status(204).send()
+			  	} else {
+			  		response.status(403).send()
+			  	}
+			}
+		catch(error){
 			response.status(404).send()
-		} else {
-		  	if (user.admin || user.id == person.user_id){
-		  		yield person.delete()
-		  		response.status(204).send()
-		  	} else {
-		  		response.status(403).send()
-		  	}
 		}
 	}
 
